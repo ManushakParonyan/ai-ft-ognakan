@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI ՖՏ օգնական · Գործուղումների կարգ</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: #06070a;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 24px 12px;
+  }
+
+  .app {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 48px);
+    max-height: 760px;
+    width: 100%;
+    max-width: 720px;
+    background: #0B0D11;
+    border: 1px solid #1E212A;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #1E212A;
+    background: #0E1014;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-box {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: linear-gradient(135deg, #6FE3B4, #3FA882);
+    flex-shrink: 0;
+  }
+
+  .header-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #EDEFF3;
+    letter-spacing: -0.01em;
+  }
+
+  .header-tag {
+    font-size: 10.5px;
+    color: #5B6170;
+    border: 1px solid #2A2E37;
+    border-radius: 999px;
+    padding: 2px 8px;
+  }
+
+  .clear-btn {
+    font-size: 12px;
+    color: #8B91A0;
+    background: none;
+    border: 1px solid #2A2E37;
+    border-radius: 8px;
+    padding: 5px 12px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .clear-btn:hover { background: #15171c; }
+
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .messages::-webkit-scrollbar { width: 8px; }
+  .messages::-webkit-scrollbar-thumb { background: #2A2E37; border-radius: 4px; }
+  .messages::-webkit-scrollbar-track { background: transparent; }
+
+  .msg-block { max-width: 88%; }
+  .msg-block.user { align-self: flex-end; }
+  .msg-block.assistant { align-self: flex-start; width: 88%; }
+
+  .msg-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .msg-block.user .msg-meta { justify-content: flex-end; }
+
+  .meta-avatar {
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    background: linear-gradient(135deg, #6FE3B4, #3FA882);
+    flex-shrink: 0;
+  }
+
+  .meta-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #5B6170;
+    letter-spacing: 0.02em;
+  }
+
+  .bubble {
+    color: #DEE1E8;
+    font-size: 14px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .msg-block.user .bubble {
+    background: #1B2A24;
+    border: 1px solid #2C4A3C;
+    border-radius: 12px;
+    padding: 10px 14px;
+  }
+
+  .citation-card {
+    background: #15171C;
+    border: 1px solid #2A2E37;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 10px;
+  }
+  .citation-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .citation-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #6FE3B4;
+    flex-shrink: 0;
+  }
+  .citation-section {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #6FE3B4;
+    letter-spacing: 0.02em;
+  }
+  .citation-quote {
+    font-size: 13px;
+    line-height: 1.65;
+    color: #A8AEBC;
+  }
+
+  .typing-dots {
+    display: flex;
+    gap: 5px;
+    padding: 4px 0;
+  }
+  .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #6FE3B4;
+    animation: pulse 1.2s infinite;
+  }
+  .dot:nth-child(2) { animation-delay: 0.15s; }
+  .dot:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes pulse { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+
+  .error-box {
+    align-self: center;
+    font-size: 12.5px;
+    color: #F0A8A8;
+    border: 1px solid #4A2A2A;
+    background: #1F1414;
+    border-radius: 8px;
+    padding: 8px 14px;
+  }
+
+  .suggestions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .suggestion-btn {
+    text-align: left;
+    background: #13151A;
+    border: 1px solid #1E212A;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #A8AEBC;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    font-family: inherit;
+  }
+  .suggestion-btn:hover {
+    background: #1A1D24;
+    border-color: #343842;
+  }
+
+  .input-row {
+    border-top: 1px solid #1E212A;
+    padding: 14px 16px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    background: #0E1014;
+  }
+
+  textarea {
+    flex: 1;
+    resize: none;
+    border: 1px solid #2A2E37;
+    background: #13151A;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #EDEFF3;
+    max-height: 160px;
+  }
+  textarea:focus { outline: none; border-color: #3FA882; }
+  textarea::placeholder { color: #5B6170; }
+
+  button.send {
+    background: linear-gradient(135deg, #6FE3B4, #3FA882);
+    color: #06140F;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    height: 41px;
+    font-family: inherit;
+  }
+  button.send:disabled {
+    background: #1E212A;
+    color: #5B6170;
+    cursor: default;
+  }
+  button.send:active:not(:disabled) { transform: scale(0.96); }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="header">
+    <div class="header-left">
+      <div class="logo-box"></div>
+      <span class="header-title">AI ՖՏ օգնական</span>
+      <span class="header-tag">Գործուղումների կարգ</span>
+    </div>
+    <button class="clear-btn" id="clearBtn">Մաքրել</button>
+  </div>
+
+  <div class="messages" id="messages"></div>
+
+  <div class="input-row">
+    <textarea id="input" rows="1" placeholder="Գրեք Ձեր հարցը..."></textarea>
+    <button class="send" id="sendBtn">Ուղարկել</button>
+  </div>
+</div>
+
+<script>
+  const INITIAL_MESSAGE = "Բարև Ձեզ։ Ես AI ՖՏ օգնականն եմ։ Կպատասխանեմ Ձեր հարցերին գործուղումների կազմակերպման և ծախսերի հատուցման կարգի հիման վրա։ Ինչով կարող եմ օգնել?";
+
+  const SUGGESTIONS = [
+    "Ինչքան է գիշերավարձի փոխհատուցումը",
+    "Ինչքան է օրապահիկը Գերմանիայում",
+    "Ինչ փաստաթղթեր են պետք վերադառնալուց հետո",
+  ];
+
+  let history = [{ role: "assistant", text: INITIAL_MESSAGE, citations: [] }];
+
+  const messagesEl = document.getElementById("messages");
+  const inputEl = document.getElementById("input");
+  const sendBtn = document.getElementById("sendBtn");
+  const clearBtn = document.getElementById("clearBtn");
+
+  function parseReply(raw) {
+    const marker = "[[CITATION]]";
+    const idx = raw.indexOf(marker);
+    if (idx === -1) {
+      return { text: raw.trim(), citations: [] };
+    }
+    const text = raw.slice(0, idx).trim();
+    const jsonPart = raw.slice(idx + marker.length).trim();
+    try {
+      const parsed = JSON.parse(jsonPart);
+      const citations = Array.isArray(parsed) ? parsed : [parsed];
+      return { text, citations };
+    } catch (e) {
+      return { text, citations: [] };
+    }
+  }
+
+  function citationCardHtml(c) {
+    const section = c.section ? escapeHtml(c.section) : "Աղբյուր";
+    const quote = c.quote ? escapeHtml(c.quote) : "";
+    return (
+      '<div class="citation-card">' +
+        '<div class="citation-head">' +
+          '<span class="citation-dot"></span>' +
+          '<span class="citation-section">' + section + '</span>' +
+        '</div>' +
+        (quote ? '<div class="citation-quote">' + quote + '</div>' : '') +
+      '</div>'
+    );
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function render() {
+    messagesEl.innerHTML = "";
+
+    for (const m of history) {
+      const block = document.createElement("div");
+      block.className = "msg-block " + m.role;
+
+      const meta = document.createElement("div");
+      meta.className = "msg-meta";
+      if (m.role === "assistant") {
+        meta.innerHTML = '<span class="meta-avatar"></span><span class="meta-label">AI ՖՏ օգնական</span>';
+      } else {
+        meta.innerHTML = '<span class="meta-label">Հարց</span>';
+      }
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = m.text;
+
+      block.appendChild(meta);
+      block.appendChild(bubble);
+
+      if (m.citations && m.citations.length > 0) {
+        const citWrap = document.createElement("div");
+        citWrap.innerHTML = m.citations.map(citationCardHtml).join("");
+        block.appendChild(citWrap);
+      }
+
+      messagesEl.appendChild(block);
+    }
+
+    if (history.length === 1) {
+      const sugWrap = document.createElement("div");
+      sugWrap.className = "suggestions";
+      for (const s of SUGGESTIONS) {
+        const btn = document.createElement("button");
+        btn.className = "suggestion-btn";
+        btn.textContent = s;
+        btn.addEventListener("click", () => {
+          inputEl.value = s;
+          inputEl.focus();
+        });
+        sugWrap.appendChild(btn);
+      }
+      messagesEl.appendChild(sugWrap);
+    }
+
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function showTyping() {
+    const block = document.createElement("div");
+    block.className = "msg-block assistant";
+    block.id = "typingBlock";
+    block.innerHTML =
+      '<div class="msg-meta"><span class="meta-avatar"></span><span class="meta-label">AI ՖՏ օգնական</span></div>' +
+      '<div class="typing-dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>';
+    messagesEl.appendChild(block);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function hideTyping() {
+    const el = document.getElementById("typingBlock");
+    if (el) el.remove();
+  }
+
+  function showError(text) {
+    const box = document.createElement("div");
+    box.className = "error-box";
+    box.textContent = text;
+    messagesEl.appendChild(box);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  async function sendMessage() {
+    const text = inputEl.value.trim();
+    if (!text || sendBtn.disabled) return;
+
+    history.push({ role: "user", text: text, citations: [] });
+    inputEl.value = "";
+    inputEl.style.height = "auto";
+    render();
+
+    sendBtn.disabled = true;
+    showTyping();
+
+    try {
+      const apiMessages = history.map((m) => ({ role: m.role, content: m.text }));
+
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: apiMessages }),
+      });
+
+      const data = await response.json();
+      hideTyping();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Unknown error");
+      }
+
+      const { text: replyText, citations } = parseReply(data.reply);
+      history.push({ role: "assistant", text: replyText, citations: citations });
+      render();
+    } catch (err) {
+      hideTyping();
+      showError("Կապի խնդիր առաջացավ։ Փորձեք կրկին։");
+      console.error(err);
+    } finally {
+      sendBtn.disabled = false;
+    }
+  }
+
+  function resetChat() {
+    history = [{ role: "assistant", text: INITIAL_MESSAGE, citations: [] }];
+    render();
+  }
+
+  sendBtn.addEventListener("click", sendMessage);
+  clearBtn.addEventListener("click", resetChat);
+  inputEl.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+  inputEl.addEventListener("input", () => {
+    inputEl.style.height = "auto";
+    inputEl.style.height = Math.min(inputEl.scrollHeight, 160) + "px";
+  });
+
+  render();
+</script>
+
+</body>
+</html>
