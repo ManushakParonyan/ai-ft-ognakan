@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI ՖՏ օգնական · Գործուղումների կարգ</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap');
 
   * { box-sizing: border-box; }
 
   body {
     margin: 0;
-    background: #06070a;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #F4EFE3;
+    font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,233 +26,226 @@
     height: calc(100vh - 48px);
     max-height: 760px;
     width: 100%;
-    max-width: 720px;
-    background: #0B0D11;
-    border: 1px solid #1E212A;
-    border-radius: 16px;
+    max-width: 640px;
+    background: #FFFDF9;
+    border: 1px solid #E8E1D3;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    box-shadow: 0 8px 30px rgba(120,100,70,0.08);
   }
 
   .header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px;
-    border-bottom: 1px solid #1E212A;
-    background: #0E1014;
-  }
-
-  .header-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    gap: 12px;
+    padding: 18px 22px;
+    border-bottom: 1px solid #EFE9DC;
+    background: #FBF7EE;
   }
 
   .logo-box {
-    width: 26px;
-    height: 26px;
-    border-radius: 7px;
-    background: linear-gradient(135deg, #6FE3B4, #3FA882);
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #5B9C8F, #3D7568);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
     flex-shrink: 0;
   }
 
+  .header-text { flex: 1; min-width: 0; }
+
   .header-title {
-    font-size: 14px;
-    font-weight: 600;
-    color: #EDEFF3;
-    letter-spacing: -0.01em;
+    font-size: 15px;
+    font-weight: 700;
+    color: #332B1F;
   }
 
-  .header-tag {
-    font-size: 10.5px;
-    color: #5B6170;
-    border: 1px solid #2A2E37;
-    border-radius: 999px;
-    padding: 2px 8px;
+  .header-subtitle {
+    font-size: 12px;
+    color: #9A8F76;
   }
 
   .clear-btn {
     font-size: 12px;
-    color: #8B91A0;
-    background: none;
-    border: 1px solid #2A2E37;
-    border-radius: 8px;
-    padding: 5px 12px;
+    color: #7A6F58;
+    background: #FFFFFF;
+    border: 1px solid #E8E1D3;
+    border-radius: 10px;
+    padding: 7px 13px;
     cursor: pointer;
+    flex-shrink: 0;
     font-family: inherit;
   }
-  .clear-btn:hover { background: #15171c; }
+  .clear-btn:hover { background: #F4EFE3; }
 
   .messages {
     flex: 1;
     overflow-y: auto;
-    padding: 22px 20px;
+    padding: 20px 22px;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 16px;
+    background: #FFFDF9;
   }
-  .messages::-webkit-scrollbar { width: 8px; }
-  .messages::-webkit-scrollbar-thumb { background: #2A2E37; border-radius: 4px; }
+  .messages::-webkit-scrollbar { width: 6px; }
+  .messages::-webkit-scrollbar-thumb { background: #E8E1D3; border-radius: 4px; }
   .messages::-webkit-scrollbar-track { background: transparent; }
 
-  .msg-block { max-width: 88%; }
-  .msg-block.user { align-self: flex-end; }
-  .msg-block.assistant { align-self: flex-start; width: 88%; }
-
-  .msg-meta {
+  .msg-block {
+    max-width: 82%;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 8px;
-    margin-bottom: 6px;
   }
-  .msg-block.user .msg-meta { justify-content: flex-end; }
-
-  .meta-avatar {
-    width: 18px;
-    height: 18px;
-    border-radius: 5px;
-    background: linear-gradient(135deg, #6FE3B4, #3FA882);
-    flex-shrink: 0;
-  }
-
-  .meta-label {
-    font-size: 11px;
-    font-weight: 600;
-    color: #5B6170;
-    letter-spacing: 0.02em;
-  }
+  .msg-block.user { align-self: flex-end; }
+  .msg-block.assistant { align-self: flex-start; }
 
   .bubble {
-    color: #DEE1E8;
-    font-size: 14px;
-    line-height: 1.7;
+    font-size: 14.5px;
+    line-height: 1.65;
     white-space: pre-wrap;
     word-break: break-word;
+    padding: 12px 16px;
   }
   .msg-block.user .bubble {
-    background: #1B2A24;
-    border: 1px solid #2C4A3C;
-    border-radius: 12px;
-    padding: 10px 14px;
+    background: #3D7568;
+    color: #FFFFFF;
+    border-radius: 16px 16px 4px 16px;
+  }
+  .msg-block.assistant .bubble {
+    background: #F4EFE3;
+    color: #3A3325;
+    border-radius: 16px 16px 16px 4px;
   }
 
   .citation-card {
-    background: #15171C;
-    border: 1px solid #2A2E37;
-    border-radius: 10px;
-    padding: 14px 16px;
-    margin-top: 10px;
+    background: #F2F7F4;
+    border: 1px solid #D6E6DF;
+    border-radius: 12px;
+    padding: 12px 15px;
   }
   .citation-head {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
+    gap: 7px;
+    margin-bottom: 6px;
   }
   .citation-dot {
     width: 6px; height: 6px; border-radius: 50%;
-    background: #6FE3B4;
+    background: #3D7568;
     flex-shrink: 0;
   }
   .citation-section {
-    font-size: 11.5px;
-    font-weight: 600;
-    color: #6FE3B4;
-    letter-spacing: 0.02em;
+    font-size: 12px;
+    font-weight: 700;
+    color: #3D7568;
   }
   .citation-quote {
     font-size: 13px;
-    line-height: 1.65;
-    color: #A8AEBC;
+    line-height: 1.6;
+    color: #5C6B64;
   }
 
   .typing-dots {
+    background: #F4EFE3;
+    border-radius: 16px 16px 16px 4px;
+    padding: 14px 16px;
     display: flex;
     gap: 5px;
-    padding: 4px 0;
+    width: fit-content;
   }
   .dot {
     width: 6px; height: 6px; border-radius: 50%;
-    background: #6FE3B4;
-    animation: pulse 1.2s infinite;
+    background: #9A8F76;
+    animation: pulse 1.1s infinite;
   }
   .dot:nth-child(2) { animation-delay: 0.15s; }
   .dot:nth-child(3) { animation-delay: 0.3s; }
-  @keyframes pulse { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.25; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-2px); }
+  }
 
   .error-box {
     align-self: center;
-    font-size: 12.5px;
-    color: #F0A8A8;
-    border: 1px solid #4A2A2A;
-    background: #1F1414;
-    border-radius: 8px;
-    padding: 8px 14px;
+    font-size: 13px;
+    color: #A14B3A;
+    border: 1px solid #EFC4B8;
+    background: #FBEEE9;
+    border-radius: 10px;
+    padding: 9px 15px;
   }
 
   .suggestions {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-top: 4px;
+    margin-top: 6px;
+  }
+  .suggestions-label {
+    font-size: 12px;
+    color: #B5A98E;
+    margin-bottom: 2px;
   }
   .suggestion-btn {
     text-align: left;
-    background: #13151A;
-    border: 1px solid #1E212A;
-    border-radius: 10px;
-    padding: 10px 14px;
-    font-size: 13px;
-    color: #A8AEBC;
+    background: #FFFFFF;
+    border: 1px solid #EFE9DC;
+    border-radius: 12px;
+    padding: 11px 15px;
+    font-size: 13.5px;
+    color: #5C5340;
     cursor: pointer;
     transition: background 0.15s, border-color 0.15s;
     font-family: inherit;
   }
   .suggestion-btn:hover {
-    background: #1A1D24;
-    border-color: #343842;
+    background: #F4EFE3;
+    border-color: #D8CDB0;
   }
 
   .input-row {
-    border-top: 1px solid #1E212A;
-    padding: 14px 16px;
+    border-top: 1px solid #EFE9DC;
+    padding: 14px 18px;
     display: flex;
     gap: 10px;
     align-items: flex-end;
-    background: #0E1014;
+    background: #FBF7EE;
   }
 
   textarea {
     flex: 1;
     resize: none;
-    border: 1px solid #2A2E37;
-    background: #13151A;
-    border-radius: 10px;
-    padding: 10px 14px;
-    font-size: 14px;
+    border: 1px solid #E8E1D3;
+    background: #FFFFFF;
+    border-radius: 14px;
+    padding: 11px 16px;
+    font-size: 14.5px;
     font-family: inherit;
-    color: #EDEFF3;
-    max-height: 160px;
+    color: #332B1F;
+    max-height: 140px;
   }
-  textarea:focus { outline: none; border-color: #3FA882; }
-  textarea::placeholder { color: #5B6170; }
+  textarea:focus { outline: none; border-color: #3D7568; }
+  textarea::placeholder { color: #B5A98E; }
 
   button.send {
-    background: linear-gradient(135deg, #6FE3B4, #3FA882);
-    color: #06140F;
+    background: linear-gradient(135deg, #5B9C8F, #3D7568);
+    color: #FFFFFF;
     border: none;
-    border-radius: 10px;
-    padding: 10px 18px;
-    font-size: 13px;
+    border-radius: 14px;
+    padding: 11px 20px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    height: 41px;
+    height: 45px;
     font-family: inherit;
   }
   button.send:disabled {
-    background: #1E212A;
-    color: #5B6170;
+    background: #E8E1D3;
+    color: #B5A98E;
     cursor: default;
   }
   button.send:active:not(:disabled) { transform: scale(0.96); }
@@ -262,12 +255,12 @@
 
 <div class="app">
   <div class="header">
-    <div class="header-left">
-      <div class="logo-box"></div>
-      <span class="header-title">AI ՖՏ օգնական</span>
-      <span class="header-tag">Գործուղումների կարգ</span>
+    <div class="logo-box">&#9992;&#65039;</div>
+    <div class="header-text">
+      <div class="header-title">AI ՖՏ օգնական</div>
+      <div class="header-subtitle">Գործուղումների կարգի վերաբերյալ հարցեր</div>
     </div>
-    <button class="clear-btn" id="clearBtn">Մաքրել</button>
+    <button class="clear-btn" id="clearBtn">Նոր զրույց</button>
   </div>
 
   <div class="messages" id="messages"></div>
@@ -279,7 +272,7 @@
 </div>
 
 <script>
-  const INITIAL_MESSAGE = "Բարև Ձեզ։ Ես AI ՖՏ օգնականն եմ։ Կպատասխանեմ Ձեր հարցերին գործուղումների կազմակերպման և ծախսերի հատուցման կարգի հիման վրա։ Ինչով կարող եմ օգնել?";
+  const INITIAL_MESSAGE = "Բարև Ձեզ \u{1F44B} Ես AI ՖՏ օգնականն եմ։ Կպատասխանեմ Ձեր հարցերին գործուղումների կազմակերպման և ծախսերի հատուցման կարգի հիման վրա։ Ինչով կարող եմ օգնել ձեզ այսօր?";
 
   const SUGGESTIONS = [
     "Ինչքան է գիշերավարձի փոխհատուցումը",
@@ -311,6 +304,12 @@
     }
   }
 
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
   function citationCardHtml(c) {
     const section = c.section ? escapeHtml(c.section) : "Աղբյուր";
     const quote = c.quote ? escapeHtml(c.quote) : "";
@@ -325,12 +324,6 @@
     );
   }
 
-  function escapeHtml(str) {
-    const div = document.createElement("div");
-    div.textContent = str;
-    return div.innerHTML;
-  }
-
   function render() {
     messagesEl.innerHTML = "";
 
@@ -338,23 +331,16 @@
       const block = document.createElement("div");
       block.className = "msg-block " + m.role;
 
-      const meta = document.createElement("div");
-      meta.className = "msg-meta";
-      if (m.role === "assistant") {
-        meta.innerHTML = '<span class="meta-avatar"></span><span class="meta-label">AI ՖՏ օգնական</span>';
-      } else {
-        meta.innerHTML = '<span class="meta-label">Հարց</span>';
-      }
-
       const bubble = document.createElement("div");
       bubble.className = "bubble";
       bubble.textContent = m.text;
-
-      block.appendChild(meta);
       block.appendChild(bubble);
 
       if (m.citations && m.citations.length > 0) {
         const citWrap = document.createElement("div");
+        citWrap.style.display = "flex";
+        citWrap.style.flexDirection = "column";
+        citWrap.style.gap = "8px";
         citWrap.innerHTML = m.citations.map(citationCardHtml).join("");
         block.appendChild(citWrap);
       }
@@ -365,6 +351,12 @@
     if (history.length === 1) {
       const sugWrap = document.createElement("div");
       sugWrap.className = "suggestions";
+
+      const label = document.createElement("div");
+      label.className = "suggestions-label";
+      label.textContent = "Փորձեք հարցնել.";
+      sugWrap.appendChild(label);
+
       for (const s of SUGGESTIONS) {
         const btn = document.createElement("button");
         btn.className = "suggestion-btn";
@@ -386,7 +378,6 @@
     block.className = "msg-block assistant";
     block.id = "typingBlock";
     block.innerHTML =
-      '<div class="msg-meta"><span class="meta-avatar"></span><span class="meta-label">AI ՖՏ օգնական</span></div>' +
       '<div class="typing-dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>';
     messagesEl.appendChild(block);
     messagesEl.scrollTop = messagesEl.scrollHeight;
@@ -460,7 +451,7 @@
   });
   inputEl.addEventListener("input", () => {
     inputEl.style.height = "auto";
-    inputEl.style.height = Math.min(inputEl.scrollHeight, 160) + "px";
+    inputEl.style.height = Math.min(inputEl.scrollHeight, 140) + "px";
   });
 
   render();
